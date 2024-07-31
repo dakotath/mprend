@@ -2,6 +2,6 @@
 A Multi-Platform library for rendering.
 
 # Wii
-> Threading: LibOGC
-> Video: GX API or GRRLIB.
-> Audio: LibOGC ASND
+> Threading: LibOGC<br>
+> Video: GX API or GRRLIB.<br>
+> Audio: LibOGC ASND<br>
