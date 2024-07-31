@@ -68,3 +68,6 @@ typedef struct {
 
 // Functions.
 int MPR_InitVideo(int w, int h);
+
+// MPR_VIDEO_H
+#endif

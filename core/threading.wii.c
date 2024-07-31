@@ -9,8 +9,8 @@
 #include <stdlib.h>
 #include <ogcsys.h>
 
-#include "threading.h"
-#include "version.h"
+#include "mprend/threading.h"
+#include "mprend/version.h"
 
 /**
  * @brief Thread Information.

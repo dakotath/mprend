@@ -9,8 +9,8 @@
 #include <stdlib.h>
 #include <windows.h>
 
-#include "threading.h"
-#include "version.h"
+#include "mprend/threading.h"
+#include "mprend/version.h"
 
 /**
  * @brief Thread Information.
