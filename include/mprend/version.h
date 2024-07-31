@@ -11,13 +11,27 @@
 #include <string.h>
 
 // Curent Version.
-#DEFINE __MPR_VMAJ 1                // Version Major.
-#DEFINE __MPR_VMIN 0                // Version Minor.
-#DEFINE __MPR_PACH 0                // Version Patch.
-#DEFINE __MPR_CNAM "Pretty Sauce"   // Version Codename.
-#DEFINE __MPR_VLEN 1024             // Maximum length of the version string.
+#define __MPR_VMAJ 1                // Version Major.
+#define __MPR_VMIN 0                // Version Minor.
+#define __MPR_PACH 0                // Version Patch.
+#define __MPR_CNAM "Pretty Sauce"   // Version Codename.
+#define __MPR_VLEN 1024             // Maximum length of the version string.
 
-// Funtions.
+// Functions.
 char* MPR_GetVersion();
 
+// Support.
+#ifdef PLATFORM_WII
+    #define DOES_SUPPORT_THREADS
+    #define DOES_SUPPORT_VIDEO
+    //#define DOES_SUPPORT_AUDIO
+#endif
+
+#ifdef PLATFORM_WIN
+    #define DOES_SUPPORT_THREADS
+    //#define DOES_SUPPORT_VIDEO
+    //#define DOES_SUPPORT_AUDIO
+#endif
+
+// MPR_VERSION_H
 #endif

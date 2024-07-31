@@ -9,6 +9,9 @@
 #include <stdlib.h>
 #include <windows.h>
 
+#include "threading.h"
+#include "version.h"
+
 /**
  * @brief Thread Information.
  * @paragraph p1es this is used to initialize threads into a controllable struct (Ex: stop, start, and wait functions).
@@ -18,14 +21,17 @@
  */
 MPThread *MPInitThread(ThreadFunction func, ThreadParams params) {
     MPThread *thread = malloc(sizeof(MPThread));
-    if (thread == NULL) {
-        printf("Failed to allocate memory for MPThread.\n");
-        return NULL;
-    }
 
-    thread->func = func;
-    thread->params = params;
-    thread->threadHandle = CreateThread(NULL, 0, thread->func, thread->params, 0, NULL);
+    #ifdef DOES_SUPPORT_THREADS
+        if (thread == NULL) {
+            printf("Failed to allocate memory for MPThread.\n");
+            return NULL;
+        }
+
+        thread->func = func;
+        thread->params = params;
+        thread->threadHandle = CreateThread(NULL, 0, thread->func, thread->params, 0, NULL);
+    #endif
 
     return thread;
 }
@@ -37,9 +43,11 @@ MPThread *MPInitThread(ThreadFunction func, ThreadParams params) {
  * @param *thread A ThreadInfo that can be created with InitThread().
  */
 void MPStartThread(MPThread* thread) {
-    if (thread->threadHandle != NULL) {
-        ResumeThread(thread->threadHandle);
-    }
+    #ifdef DOES_SUPPORT_THREADS
+        if (thread->threadHandle != NULL) {
+            ResumeThread(thread->threadHandle);
+        }
+    #endif
 }
 
 /**
@@ -49,9 +57,11 @@ void MPStartThread(MPThread* thread) {
  * @param *thread A ThreadInfo that can be created with InitThread().
  */
 void MPWaitForThread(MPThread* thread) {
-    if (thread->threadHandle != NULL) {
-        WaitForSingleObject(thread->threadHandle, INFINITE);
-    }
+    #ifdef DOES_SUPPORT_THREADS
+        if (thread->threadHandle != NULL) {
+            WaitForSingleObject(thread->threadHandle, INFINITE);
+        }
+    #endif
 }
 
 /**
@@ -61,9 +71,12 @@ void MPWaitForThread(MPThread* thread) {
  * @param *thread The thread you want to clear.
  */
 void MPDestroyThread(MPThread* thread) {
-    if (thread->threadHandle != NULL) {
-        CloseHandle(thread->threadHandle);
-    }
+    #ifdef DOES_SUPPORT_THREADS
+        if (thread->threadHandle != NULL) {
+            CloseHandle(thread->threadHandle);
+        }
+    #endif
 }
 
+// PLATFORM_WIN
 #endif

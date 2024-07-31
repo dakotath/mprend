@@ -44,4 +44,10 @@ typedef struct {
     ThreadHandle threadHandle;
 } MPThread;
 
+// Functions.
+MPThread *MPInitThread(ThreadFunction func, ThreadParams params);
+void MPStartThread(MPThread* thread);
+void MPWaitForThread(MPThread* thread);
+void MPDestroyThread(MPThread* thread);
+
 #endif
