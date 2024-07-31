@@ -37,4 +37,11 @@ int MPR_InitVideo(int w, int h) {
     return MPR_ERROR_VOK;
 }
 
+/**
+ * @brief Get a texture.
+ */
+MPTexture MPR_LoadTexture(const char* fileName) {
+    MPTexture newTexture;
+}
+
 #endif

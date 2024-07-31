@@ -1,40 +1,53 @@
-# output related
+# Output related
 ifndef PLAT
-$(error PLAT is not set, this is not meant to be called directly!) 
+$(error PLAT is not set, this is not meant to be called directly!)
 endif
 
-TARGET = $(notdir $(CURDIR))
-BUILD = build_$(PLAT)
-OUT = lib/$(PLAT)/lib$(TARGET).a
-
-# source dirs
-SRC = core
-
-# compilers and flags
+# Compiler and flags
 CC = gcc
-CXX = gcc
+CFLAGS = -Wall -Wextra -O2 -Iinclude -DPLATFORM_$(PLAT)
 
-CFLAGS_COMMON = -Wall -Wextra -fsanitize=address,undefined -DPLATFORM_$(PLAT)
-CFLAGS = $(CFLAGS_COMMON)
-CXXFLAGS = $(CFLAGS_COMMON)
+# Directories
+CORE_DIR = core
+PLAT_DIR = plat/$(PLAT)
+BUILD_DIR = build_$(PLAT)
+LIB_DIR = lib/$(PLAT)
 
-# find all source files and know what to compile
-CFILES = $(shell find $(SRC) -name '*.c' | grep -v '\.wii\.c')
-CPPFILES = $(shell find $(SRC) -name '*.cpp' | grep -v '\.wii\.c')
+# Create build and lib directories if they don't exist
+$(shell mkdir -p $(BUILD_DIR))
+$(shell mkdir -p $(LIB_DIR))
 
-OBJ = $(patsubst $(SRC)/%.c,$(BUILD)/%.o,$(CFILES)) $(patsubst $(SRC)/%.cpp,$(BUILD)/%.o,$(CPPFILES))
+# Find all source files in core and plat/$(PLAT)
+CORE_SOURCES = $(wildcard $(CORE_DIR)/*.c)
+PLAT_SOURCES = $(wildcard $(PLAT_DIR)/*.c)
 
-$(OUT): $(OBJ)
-	@mkdir -p $(@D)
-	$(info $s  AR	$^ ==> $@)
-	ar cr $@ $^
+# Combine all sources
+SOURCES = $(CORE_SOURCES) $(PLAT_SOURCES)
 
-$(BUILD)/%.o: $(SRC)/%.c
-	@mkdir -p $(@D)
-	@$(info $s  CC $(patsubst src/%.c,%.c,$^) ==> $(patsubst build/%.o,%.o,$@))
-	@$(CC) $(CFLAGS) -c $< -o $@
+# Object files in the build directory
+OBJECTS = $(patsubst %.c,$(BUILD_DIR)/%.o,$(SOURCES))
 
-$(BUILD)/%.o: $(SRC)/%.cpp
-	@mkdir -p $(@D)
-	@$(info $s  CXX $(patsubst src/%.cpp,%.cpp,$^) ==> $(patsubst build/%.o,%.o,$@))
-	@$(CXX) $(CXXFLAGS) -c $< -o $@
+# Static library
+LIBRARY = $(LIB_DIR)/libmprend.a
+
+# Static library
+LIBRARY = $(LIB_DIR)/libmprend.a
+
+# Default target
+all: $(LIBRARY)
+
+# Create static library from object files
+$(LIBRARY): $(OBJECTS)
+	ar rcs $@ $(OBJECTS)
+
+# Rule to compile .c files into .o files
+# Ensure directory exists before creating .o files
+$(BUILD_DIR)/%.o: %.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Clean target
+clean:
+	rm -rf $(BUILD_DIR) $(LIB_DIR)
+
+.PHONY: all clean
