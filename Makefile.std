@@ -1,0 +1,40 @@
+# output related
+ifndef PLAT
+$(error PLAT is not set, this is not meant to be called directly!) 
+endif
+
+TARGET = $(notdir $(CURDIR))
+BUILD = build_$(PLAT)
+OUT = lib/$(PLAT)/lib$(TARGET).a
+
+# source dirs
+SRC = core
+
+# compilers and flags
+CC = gcc
+CXX = gcc
+
+CFLAGS_COMMON = -Wall -Wextra -fsanitize=address,undefined -DPLATFORM_$(PLAT)
+CFLAGS = $(CFLAGS_COMMON)
+CXXFLAGS = $(CFLAGS_COMMON)
+
+# find all source files and know what to compile
+CFILES = $(shell find $(SRC) -name '*.c' | grep -v '\.wii\.c')
+CPPFILES = $(shell find $(SRC) -name '*.cpp' | grep -v '\.wii\.c')
+
+OBJ = $(patsubst $(SRC)/%.c,$(BUILD)/%.o,$(CFILES)) $(patsubst $(SRC)/%.cpp,$(BUILD)/%.o,$(CPPFILES))
+
+$(OUT): $(OBJ)
+	@mkdir -p $(@D)
+	$(info $s  AR	$^ ==> $@)
+	ar cr $@ $^
+
+$(BUILD)/%.o: $(SRC)/%.c
+	@mkdir -p $(@D)
+	@$(info $s  CC $(patsubst src/%.c,%.c,$^) ==> $(patsubst build/%.o,%.o,$@))
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD)/%.o: $(SRC)/%.cpp
+	@mkdir -p $(@D)
+	@$(info $s  CXX $(patsubst src/%.cpp,%.cpp,$^) ==> $(patsubst build/%.o,%.o,$@))
+	@$(CXX) $(CXXFLAGS) -c $< -o $@
