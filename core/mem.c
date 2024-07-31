@@ -10,6 +10,9 @@
 #ifdef PLATFORM_WIN
 #include <windows.h>
 #endif
+#ifdef PLATFORM_WII
+#include <stdbool.h>
+#endif
 
 // Internal.
 #include "mprend/version.h"
@@ -62,6 +65,7 @@ int MPR_InitMemory() {
             free(testAlloc);
             validMem+=500;
         }
+        printf("\n");
         __totalMem=validMem;
     #else
         return 2;
