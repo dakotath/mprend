@@ -1,5 +1,5 @@
 /**
- * @file video.grrlib.c
+ * @file video.wii.c
  */
 #ifdef PLATFORM_WII
 
@@ -18,11 +18,21 @@
 
 /**
  * @brief Init the Video System.
+ * @param w Screen Width.
+ * @param h Screen Height.
+ * @param pScreen Pointer to Screen.
  */
-int MPR_InitVideo(int w, int h) {
+int MPR_InitVideo(char* title, int w, int h, MPScreen* pScreen) {
     // Size is forced 640x480.
-    w=640;
-    h=480;
+    MPSize scrnSize;
+    scrnSize.w=640;
+    scrnSize.h=480;
+    
+    // Setup the screen size.
+    pScreen->window = NULL;
+    pScreen->renderer = NULL;
+    pScreen->screenSize = scrnSize;
+    pScreen->title = title;
 
     // Init the Wii Platform.
     WPAD_Init();
@@ -35,13 +45,6 @@ int MPR_InitVideo(int w, int h) {
     }
 
     return MPR_ERROR_VOK;
-}
-
-/**
- * @brief Get a texture.
- */
-MPTexture MPR_LoadTexture(const char* fileName) {
-    MPTexture newTexture;
 }
 
 #endif

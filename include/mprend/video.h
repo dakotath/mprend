@@ -12,11 +12,36 @@
 
 #include "version.h"
 
+// Platform support.
+#ifdef PLATFORM_WII
+    #include <grrlib.h>
+
+    typedef GRRLIB_texImg TextureData;
+    typedef GRRLIB_ttfFont FontData;
+
+    typedef void* MPWindow;
+    typedef void* MPRenderer;
+#endif
+#ifdef PLATFORM_WIN
+    #include <SDL2/SDL.h>
+    #include <SDL2/SDL_ttf.h>
+
+    typedef SDL_Texture TextureData;
+    typedef TTF_Font FontData;
+
+    typedef SDL_Window MPWindow;
+    typedef SDL_Renderer MPRenderer;
+
+    typedef float f32;
+#endif
+
 // Video Errors.
+#ifdef ISBUILDER
 enum {
     MPR_ERROR_VOK = 0,
     MPR_ERROR_VINIT = -1,
 } MPRVErrors;
+#endif
 
 // Standard types.
 typedef struct {
@@ -39,13 +64,13 @@ typedef struct {
     int a;
 } MPColor;
 
-// Platform support.
-#ifdef PLATFORM_WII
-    #include <grrlib.h>
-
-    typedef GRRLIB_texImg TextureData;
-    typedef GRRLIB_ttfFont FontData;
-#endif
+// Screen.
+typedef struct {
+    MPWindow* window;
+    MPRenderer* renderer;
+    MPSize screenSize;
+    char* title;
+} MPScreen;
 
 // Generic structures.
 typedef struct {
@@ -67,7 +92,7 @@ typedef struct {
 } MPFont;
 
 // Functions.
-int MPR_InitVideo(int w, int h);
+int MPR_InitVideo(char* title, int w, int h, MPScreen* pScreen);
 
 // MPR_VIDEO_H
 #endif

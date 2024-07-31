@@ -23,7 +23,7 @@ char* MPR_GetVersion() {
 
     // Check the length of the version.
     int _verLen = strlen(_verStrM);
-    if(_verLen < __MPR_VLEN) {
+    if(_verLen > __MPR_VLEN) {
         // Free memory.
         free(_verStrM);
 

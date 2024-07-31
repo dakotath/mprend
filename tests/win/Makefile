@@ -1,7 +1,7 @@
 # Compiler and flags
 CC = gcc
-CFLAGS = -I./include -Wall -Wextra -O2
-LDFLAGS = -L./lib -lmprend
+CFLAGS = -I./include -I./exinclude -Wall -Wextra -O2 -DPLATFORM_WIN
+LDFLAGS = -L./lib -L./exlib -lmprend -lSDL2 -lSDL2_ttf
 
 # Source and object files
 SRC_DIR = src

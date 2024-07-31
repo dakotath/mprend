@@ -1,7 +1,13 @@
+.vscode
 bin
 build*
-lib
-.vscode
+exlib
+exinclude
+*.a
+*.o
+*.d
+*.s
 *.exe
+*.dll
 *.dol
 *.elf
