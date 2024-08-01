@@ -35,6 +35,14 @@
     typedef float f32;
 #endif
 
+// Video Errors.
+#ifdef ISBUILDER
+enum {
+    MPR_ERROR_VOK = 0,
+    MPR_ERROR_VINIT = -1,
+} MPRVErrors;
+#endif
+
 // Standard types.
 typedef struct {
     int x;

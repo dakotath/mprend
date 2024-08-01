@@ -15,6 +15,9 @@
 // Platform Support.
 #ifdef PLATFORM_WII
     #include <unistd.h>
+    #include <gccore.h>
+    #include <ogcsys.h>
+    #include <ogc/lwp.h>
     
     // Internal Wait.
     #define udelay(ms) usleep(ms * 1000)

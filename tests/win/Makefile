@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = gcc
-CFLAGS = -I./include -I./exinclude -Wall -Wextra -O2 -DPLATFORM_WIN
+CFLAGS = -I./include -I./exinclude -Wall -Wextra -O2 -fsanitize=address,undefined -DPLATFORM_WIN
 LDFLAGS = -L./lib -L./exlib -lmprend -lSDL2 -lSDL2_ttf
 
 # Source and object files

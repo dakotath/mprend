@@ -5,7 +5,7 @@ endif
 
 # Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -O2 -Iinclude -Iexinclude -DPLATFORM_$(PLAT) -DISBUILDER
+CFLAGS = -Wall -Wextra -O2 -fsanitize=address,undefined -Iinclude -Iexinclude -DPLATFORM_$(PLAT) -DISBUILDER
 
 # Directories
 CORE_DIR = core
